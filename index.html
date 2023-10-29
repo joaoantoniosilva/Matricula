@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Localhost:8080/menu/Alunos/Matricula</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Estilos CSS */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: #424242;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        nav ul li {
+            float: left;
+        }
+
+        nav ul li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        nav ul li a:hover {
+            background-color: #555;
+        }
+
+        main {
+            display: flex;
+            justify-content: space-between;
+            max-width: 960px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+        }
+
+        .overview-card {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px;
+            text-align: center;
+        }
+
+        .overview-card h3 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        #totalEnrollments {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #444444;
+            color: white;
+            width: 100%;
+        }
+
+        #chart-container {
+            width: 60%;
+            height: auto;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 60%;
+        }
+
+        .secondary-buttons {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .secondary-button {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .secondary-button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Menu principal - Gestão de Matrículas</h1>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="matricula.html">Matricular aluno</a></li>
+            <li><a href="tranferencia.html">Transferência de matrícula</a></li>
+            <li><a href="busca.html">Busca de matrícula</a></li>
+            <li><a href="exclusão.html">Exclusão de matrícula</a></li>
+            <li><a href="painel.html">Dashboard</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="overview">
+            <div class="overview-card">
+                <h3>Total de Matrículas</h3>
+                <p id="totalEnrollments">3</p>
+            </div>
+            <div class="overview-card">
+                <h3>Total de Alunos</h3>
+                <p id="totalStudents">3</p>
+            </div>
+            <div class="overview-card">
+                <h3>Total de Escolas</h3>
+                <p id="totalSchools">3</p>
+            </div>
+            <div class="overview-card">
+                <h3>Total de Matrículas Alteradas</h3>
+                <p id="totalModifiedEnrollments">1</p>
+            </div>
+            <div class="overview-card">
+                <h3>Total de Matrículas no Último Mês</h3>
+                <p id="totalEnrollmentsLastMonth">3</p>
+            </div>
+        </section>
+
+        <section id="reports">
+            <h2> Informações das Matrículas </h2>
+            <div id="chart-container">
+                <canvas id="enrollmentsChart"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 - Gestão de Matrículas</p>
+    </footer>
+
+   
+    <div class="secondary-buttons">
+        <button class="secondary-button" id="sair-button">Sair</button>
+        <a href="ajuda.html" class="secondary-button">Ajuda</a>
+        <a href="sobre.html" class="secondary-button">Sobre</a>
+    </div>
+
+    <script>
+        // Função para obter o elemento pelo ID
+        function getElement(id) {
+            return document.getElementById(id);
+        }
+
+        // Função para atualizar o campo "Total de Matrículas" e "Total de Alunos"
+        function atualizarTotalMatriculasEAlunos() {
+            // Obtém o valor atual do campo "Total de Matrículas"
+            var totalMatriculas = parseInt(getElement("totalEnrollments").textContent);
+
+            // Incrementa o valor do campo "Total de Matrículas"
+            totalMatriculas++;
+
+            // Atualiza o campo "Total de Matrículas"
+            getElement("totalEnrollments").textContent = totalMatriculas;
+
+            // Obtém o valor atual do campo "Total de Alunos"
+            var totalAlunos = parseInt(getElement("totalStudents").textContent);
+
+            // Incrementa o valor do campo "Total de Alunos"
+            totalAlunos++;
+
+            // Atualiza o campo "Total de Alunos"
+            getElement("totalStudents").textContent = totalAlunos;
+        }
+
+        // Função para submeter o formulário
+        function submitForm() {
+            if (validateForm()) {
+                // Simula uma solicitação bem-sucedida (substitua isto pelo seu código real)
+                setTimeout(function () {
+                    // Se a matrícula for enviada com sucesso, chame a função para atualizar os campos
+                    atualizarTotalMatriculasEAlunos();
+
+                    // Em seguida, mostre o modal de conclusão
+                    openConclusionModal();
+                }, 2000); // Simula um atraso de 2 segundos para a resposta do servidor (substitua pelo seu código real)
+            }
+        }
+
+  
+
+        // Função para abrir o modal
+        function openModal() {
+            const modal = document.getElementById("dateModal");
+            modal.style.display = "block";
+        }
+
+        // Função para fechar o modal
+        function closeModal() {
+            const modal = document.getElementById("dateModal");
+            modal.style.display = "none";
+        }
+
+        // Restante do seu código JavaScript existente aqui...
+
+        // Configuração do gráfico de pizza
+        const ctx = document.getElementById("enrollmentsChart").getContext("2d");
+        const enrollmentsChart = new Chart(ctx, {
+            type: "pie",
+            data: {
+                labels: [" Ativas", " Excluidas", " Transferidas"],
+                datasets: [{
+                    data: [3, 0, 0],
+                    backgroundColor: ["#007BFF", "#FF5733", "#FFC300"],
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+            },
+        });
+
+        // Função para tratar o botão "Sair"
+        const sairButton = document.getElementById('sair-button');
+        sairButton.addEventListener('click', () => {
+            const confirmacao = confirm('Deseja realmente sair?');
+            if (confirmacao) {
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+</html>
