@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Controle - Gestão de Matrículas</title>
+    <!-- Inclua a biblioteca Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Estilos CSS */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: #424242;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        nav ul li {
+            float: left;
+        }
+
+        nav ul li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        nav ul li a:hover {
+            background-color: #555;
+        }
+
+        main {
+            display: flex;
+            justify-content: space-between;
+            max-width: 960px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+        }
+
+        .overview-card {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px;
+            text-align: center;
+        }
+
+        /* Estilo para destacar o campo "Total de Matrículas" */
+        .overview-card h3 {
+            font-size: 24px; /* Tamanho maior */
+            font-weight: bold; /* Negrito */
+        }
+
+        /* Estilos adicionados para o campo "Total de Matrículas" */
+        #totalEnrollments {
+            font-size: 32px; /* Aumento do tamanho da fonte */
+            font-weight: bold; /* Negrito */
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #444444;
+            color: white;
+            width: 100%;
+        }
+
+        /* Estilos CSS para o gráfico de pizza */
+        #chart-container {
+            width: 60%; /* Aumentamos a largura */
+            height: auto; /* Altura automática */
+        }
+
+        /* Estilos para o modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 60%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Painel de Controle - Gestão de Matrículas</h1>
+    </header>
+    
+    <nav>
+        <ul>
+            <li><a href="Menu.html">Voltar ao Menu principal</a></li>
+            <li><a href="lista alunos.html">Alunos</a></li>
+            <li><a href="lista escola.html">Escolas</a></li>
+            <li><a href="#" onclick="openModal()">Selecionar Data</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="overview">
+            <div class="overview-card">
+                <h3>Total de Matrículas</h3>
+                <p id="totalEnrollments">3</p>
+            </div>
+            <div class="overview-card">
+                <h3>Total de Alunos</h3>
+                <p id="totalStudents">3</p>
+            </div>
+            <div class="overview-card">
+                <h3>Total de Escolas</h3>
+                <p id="totalSchools">3</p>
+            </div>
+            <div class="overview-card">
+                <h3>Total de Matrículas Alteradas</h3>
+                <p id="totalModifiedEnrollments">1</p>
+            </div>
+            <div class="overview-card">
+                <h3>Total de Matrículas no Último Mês</h3>
+                <p id="totalEnrollmentsLastMonth">3</p>
+            </div>
+        </section>
+
+        <section id="reports">
+            <h2>Gráfico de Matrículas</h2>
+            <div id="chart-container">
+                <canvas id="enrollmentsChart"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 - Gestão de Matrículas</p>
+    </footer>
+
+    <!-- Modal para a seleção de data -->
+    <div id="dateModal" class="modal">
+        <div class="modal-content">
+            <h2>Selecionar Data</h2>
+            <label for="selectedDate">Escolha uma data:</label>
+            <input type="date" id="selectedDate">
+            <button onclick="redirectToPage()">Selecionar</button>
+            <button onclick="closeModal()">Fechar</button>
+        </div>
+    </div>
+
+    <script>
+        // Função para obter a data selecionada e redirecionar para outra página
+        function redirectToPage() {
+    const selectedDate = document.getElementById("selectedDate").value;
+    window.location.href = "ErroDashboard.html"; // Corrigido para "ErroDashboard.html"
+}
+
+        // Função para abrir o modal
+        function openModal() {
+            const modal = document.getElementById("dateModal");
+            modal.style.display = "block";
+        }
+
+        // Função para fechar o modal
+        function closeModal() {
+            const modal = document.getElementById("dateModal");
+            modal.style.display = "none";
+        }
+
+        // Restante do seu código JavaScript existente aqui...
+
+        // Configuração do gráfico de pizza
+        const ctx = document.getElementById("enrollmentsChart").getContext("2d");
+        const enrollmentsChart = new Chart(ctx, {
+            type: "pie",
+            data: {
+                labels: ["Matrículas Ativas", "Matrículas Canceladas", "Matrículas Pendentes"],
+                datasets: [{
+                    data: [3, 1, 1],
+                    backgroundColor: ["#007BFF", "#FF5733", "#FFC300"],
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+            },
+        });
+    </script>
+</body>
+</html>
+

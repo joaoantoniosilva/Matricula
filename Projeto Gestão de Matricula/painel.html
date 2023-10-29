@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Localhost:8080/dastboardEscolar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .dashboard {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+        }
+
+        .chart {
+            width: 30%;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .chart h2 {
+            text-align: center;
+        }
+
+        .chart canvas {
+            width: 100%;
+            height: auto;
+        }
+
+        .arrow-up {
+            color: green;
+        }
+
+        .arrow-down {
+            color: red;
+        }
+
+        /* Estilo para os botões */
+        .button-container button {
+            background-color: #333435;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        /* Estilo para o botão "Selecionar Data" */
+        #dateModalButton {
+            background-color: #333;
+        }
+
+        /* Estilo para o botão "Voltar ao Menu" */
+        #backToMenuButton {
+            background-color: #3b3b3a;
+        }
+
+        /* Estilo para o modal */
+        #dateModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            padding: 20px;
+        }
+
+        .modal-label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .modal-button {
+            background-color: #3e3f41;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="chart">
+            <h2>Escola 1</h2>
+            <canvas id="chart1"></canvas>
+        </div>
+
+        <div class="chart">
+            <h2>Escola 2</h2>
+            <canvas id="chart2"></canvas>
+        </div>
+
+        <div class="chart">
+            <h2>Escola 3</h2>
+            <canvas id="chart3"></canvas>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button id="dateModalButton">Selecionar Período</button>
+        <button id="backToMenuButton">Voltar ao Menu</button>
+    </div>
+
+    <div id="dateModal">
+        <div class="modal-content">
+            <label class="modal-label" for="fromDate">De:</label>
+            <input class="modal-input" type="date" id="fromDate">
+            
+            <label class="modal-label" for="toDate">Até:</label>
+            <input class="modal-input" type="date" id="toDate">
+            
+            <button class="modal-button" id="applyDate">Aplicar</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Dados fictícios para os gráficos (número de matrículas por escola)
+        var dataEscola1 = [1, 0, 0];
+        var dataEscola2 = [2, 1, 0];
+        var dataEscola3 = [1, 0, 0];
+
+        // Configuração dos gráficos
+        var config1 = {
+            type: 'bar',
+            data: {
+                labels: ['Ativas', 'Transferidas', 'Excluídas'],
+                datasets: [{
+                    label: 'Matrículas',
+                    data: dataEscola1,
+                    backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 206, 86, 0.2)'],
+                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)', 'rgba(255, 206, 86, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {}
+        };
+
+        var config2 = {
+            type: 'bar',
+            data: {
+                labels: ['Ativas', 'Transferidas', 'Excluídas'],
+                datasets: [{
+                    label: 'Matrículas',
+                    data: dataEscola2,
+                    backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 206, 86, 0.2)'],
+                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)', 'rgba(255, 206, 86, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {}
+        };
+
+        var config3 = {
+            type: 'bar',
+            data: {
+                labels: ['Ativas', 'Transferidas', 'Excluídas'],
+                datasets: [{
+                    label: 'Matrículas',
+                    data: dataEscola3,
+                    backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 206, 86, 0.2)'],
+                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)', 'rgba(255, 206, 86, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {}
+        };
+
+        // Renderizar os gráficos
+        var ctx1 = document.getElementById('chart1').getContext('2d');
+        var ctx2 = document.getElementById('chart2').getContext('2d');
+        var ctx3 = document.getElementById('chart3').getContext('2d');
+
+        new Chart(ctx1, config1);
+        new Chart(ctx2, config2);
+        new Chart(ctx3, config3);
+
+        // Modal de seleção de datas
+        var dateModal = document.getElementById('dateModal');
+        var dateModalButton = document.getElementById('dateModalButton');
+        var applyDateButton = document.getElementById('applyDate');
+
+        dateModalButton.addEventListener('click', function() {
+            dateModal.style.display = 'block';
+        });
+
+        applyDateButton.addEventListener('click', function() {
+            dateModal.style.display = 'none';
+            var fromDate = document.getElementById('fromDate').value;
+            var toDate = document.getElementById('toDate').value;
+       
+        });
+
+        // Botão para voltar ao menu
+        var backToMenuButton = document.getElementById('backToMenuButton');
+        backToMenuButton.addEventListener('click', function() {
+            // Redirecionar de volta para o menu
+            window.location.href = 'menu4.html';
+        });
+    </script>
+</body>
+</html>

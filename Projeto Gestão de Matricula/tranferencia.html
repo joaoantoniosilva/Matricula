@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Localhost:8080/transferencia/Matricula</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            border: 1px solid #9b9696;
+            padding: 20px;
+            border-radius: 5px;
+            width: 50%;
+            margin: 0 auto; /* Centraliza o formulário horizontalmente */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #9b9797;
+            border-radius: 3px;
+        }
+
+        input[type="submit"] {
+            background-color: #333533;
+            color: rgb(255, 255, 255);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .success-message {
+            display: none;
+            background-color: #4CAF50;
+            color: rgb(255, 255, 255);
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Transferência de Matrículas</h1>
+        <form id="transferForm" action="#" method="post">
+            <label for="matriculaId">ID da Matrícula:</label>
+            <input type="text" id="matriculaId" name="matriculaId" required>
+
+            <label for="cpfAluno">CPF do Aluno:</label>
+            <input type="text" id="cpfAluno" name="cpfAluno" required>
+
+            <label for="nomeEscola">Nome da Escola de Destino:</label>
+            <input type="text" id="nomeEscola" name="nomeEscola" required>
+
+            <input type="submit" value="Transferir Matrícula">
+        </form>
+
+        <div class="success-message" id="successMessage">
+            Transferência concluída com sucesso!
+            <div class="buttons">
+                <a href="menu3.html"><button>Voltar ao Menu Principal</button></a>
+                <button id="novaTransferencia">Fazer Nova Transferência</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("transferForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Impede o envio do formulário
+
+            // Simulando o processo de transferência (substitua por sua lógica de backend)
+            setTimeout(function() {
+                // Após um tempo de espera simulado, exibe a mensagem de sucesso
+                document.getElementById("transferForm").style.display = "none";
+                document.getElementById("successMessage").style.display = "block";
+            }, 2000); // Simula um atraso de 2 segundos
+        });
+
+        document.getElementById("novaTransferencia").addEventListener("click", function() {
+            // Redireciona para uma nova página de formulário de transferência ou reseta o formulário atual
+            window.location.reload(); // Recarrega a página para fazer uma nova transferência
+        });
+    </script>
+</body>
+</html>

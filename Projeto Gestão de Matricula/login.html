@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Localhost:8080/Login</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('notebook.jpg'); /* Substitua 'notebook.jpg' pelo caminho para a imagem do notebook */
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.8); /* Fundo semi-transparente para legibilidade */
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        #entrar-button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Tela de Login</h1>
+        <form id="login-form" action="menu.html"> <!-- Redireciona para menu.html após clicar em "Entrar" -->
+            <input type="text" id="nome-usuario" placeholder="Nome de usuário (sem números ou caracteres especiais)" required>
+            <input type="password" id="senha" placeholder="Senha (no mínimo 6 caracteres)" required>
+            <button type="submit" id="entrar-button">Entrar</button>
+        </form>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('login-form');
+        const nomeUsuarioInput = document.getElementById('nome-usuario');
+        const senhaInput = document.getElementById('senha');
+
+        loginForm.addEventListener('submit', function (event) {
+            const nomeUsuario = nomeUsuarioInput.value;
+            const senha = senhaInput.value;
+
+            // Validar nome de usuário (não contém números ou caracteres especiais)
+            if (!/^[a-zA-Z]+$/.test(nomeUsuario)) {
+                alert('Nome de usuário inválido. Use apenas letras.');
+                event.preventDefault(); // Impede o envio do formulário
+                return;
+            }
+
+            // Validar senha (pelo menos 6 caracteres)
+            if (senha.length < 6) {
+                alert('A senha deve ter pelo menos 6 caracteres.');
+                event.preventDefault(); // Impede o envio do formulário
+                return;
+            }
+        });
+    </script>
+</body>
+</html>
+

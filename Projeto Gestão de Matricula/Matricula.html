@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="aluno.js"></script>
+    <script src="matricula.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Localhost:8080/Matricula</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 125vh;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            flex-basis: 48%; /* Define a largura dos rótulos para 48% para exibi-los em duas colunas */
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"] {
+            flex-basis: 48%; /* Define a largura dos campos de entrada para 48% para exibi-los em duas colunas */
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #525252;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0f0f0f;
+        }
+
+        /* Botão "Voltar ao Menu Principal" */
+        .back-button {
+            padding: 10px 20px;
+            background-color: #555;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* Modal de Confirmação */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal .icon {
+            font-size: 48px;
+            color: #fa0000; /* Cor vermelha para o ícone de exclamação */
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Modal "Concluído" -->
+    <div class="modal" id="conclusionModal">
+        <div class="modal-content">
+            <div class="icon">
+                <i class="fas fa-exclamation-circle"></i> <!-- Ícone de exclamação -->
+            </div>
+            <h2>Concluído</h2>
+            <p>A matrícula foi enviada com sucesso!</p>
+            <button onclick="closeConclusionModal()">Fechar</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <a href="menu2.html" class="back-button">Voltar ao Menu Principal</a>
+        <h1>Gestão de Matrícula de Aluno</h1>
+        <form id="matriculaForm" onsubmit="return false;">
+            <label for="nomeCompleto">Nome Completo do Aluno:</label>
+            <input type="text" id="nomeCompleto" name="nomeCompleto" required>
+
+            <label for="cpf">CPF (Somente Números):</label>
+            <input type="number" id="cpf" name="cpf" required>
+
+            <label for="rg">RG (Somente Números):</label>
+            <input type="number" id="rg" name="rg" required>
+
+            <label for="telefone">Número de Telefone (Somente Números):</label>
+            <input type="number" id="telefone" name="telefone" required>
+
+            <label for="dataNascimento">Data de Nascimento:</label>
+            <input type="date" id="dataNascimento" name="dataNascimento" required>
+
+            <label for="nomeEscola">Nome da Escola:</label>
+            <input type="text" id="nomeEscola" name="nomeEscola" required>
+
+            <label for="cnpjEscola">CNPJ da Escola (Somente Números):</label>
+            <input type="number" id="cnpjEscola" name="cnpjEscola" required>
+
+            <label for="cep">CEP (Somente Números):</label>
+            <input type="number" id="cep" name="cep" required>
+
+            <button type="button" onclick="submitForm()">Enviar Matrícula</button>
+        </form>
+    </div>
+
+    <script>
+        function submitForm() {
+            // Verifica se todos os campos obrigatórios estão preenchidos
+            if (validateForm()) {
+                // Simula uma solicitação bem-sucedida (substitua isto pelo seu código real)
+                setTimeout(function () {
+                    // Se a matrícula for enviada com sucesso, mostre o modal de conclusão
+                    openConclusionModal();
+                }, 2000); // Simula um atraso de 2 segundos para a resposta do servidor (substitua pelo seu código real)
+            }
+        }
+
+        function validateForm() {
+            var fields = ["nomeCompleto", "cpf", "rg", "telefone", "dataNascimento", "nomeEscola", "cnpjEscola", "cep"];
+            var valid = true;
+
+            for (var i = 0; i < fields.length; i++) {
+                var field = fields[i];
+                var value = document.getElementById(field).value.trim();
+
+                if (value === "") {
+                    valid = false;
+                    alert("Por favor, preencha todos os campos obrigatórios.");
+                    break;
+                }
+            }
+
+            return valid;
+        }
+
+        function openConclusionModal() {
+            document.getElementById("conclusionModal").style.display = "flex";
+        }
+
+        function closeConclusionModal() {
+            document.getElementById("conclusionModal").style.display = "none";
+            // Limpa os campos do formulário
+            document.getElementById("matriculaForm").reset();
+        }
+        function submitForm() {
+            if (validateForm()) {
+                // Simula uma solicitação bem-sucedida (substitua isto pelo seu código real)
+                setTimeout(function () {
+                    // Atualiza o Local Storage com o novo valor de matrículas
+                    updateLocalStorage();
+
+                    // Se a matrícula for enviada com sucesso, mostre o modal de conclusão
+                    openConclusionModal();
+                }, 2000); // Simula um atraso de 2 segundos para a resposta do servidor (substitua pelo seu código real)
+            }
+        }
+
+        function validateForm() {
+            // Validação de formulário aqui...
+
+            return true; // Retorna verdadeiro para esta simulação
+        }
+
+        function openConclusionModal() {
+            document.getElementById("conclusionModal").style.display = "flex";
+        }
+
+        function closeConclusionModal() {
+            document.getElementById("conclusionModal").style.display = "none";
+            document.getElementById("matriculaForm").reset();
+        }
+
+        function updateLocalStorage() {
+            // Recupera o valor atual de "totalMatriculas" do Local Storage
+            var totalMatriculas = localStorage.getItem("totalMatriculas");
+
+            // Converte o valor para um número (se existir)
+            totalMatriculas = totalMatriculas ? parseInt(totalMatriculas) : 0;
+
+            // Aumenta o valor em 1 para representar uma nova matrícula
+            totalMatriculas++;
+
+            // Atualiza o valor no Local Storage
+            localStorage.setItem("totalMatriculas", totalMatriculas);
+
+            // Atualiza o campo "total de matrículas" na página Menu.html (se a página estiver aberta)
+            if (window.opener && window.opener.document.getElementById("totalMatriculas")) {
+                window.opener.document.getElementById("totalMatriculas").textContent = totalMatriculas;
+            }
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>>Localhost:8080/Alunos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .checkbox-column {
+            text-align: center;
+        }
+
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #3e3f3e;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .search-bar {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-icon {
+            font-size: 20px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+
+        #backToMain {
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+          /* Estilo do modal de seleção de escola */
+          #schoolSelectionModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        #schoolSelectionModalContent {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        /* Estilo do modal de sucesso */
+        #successModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        #successModalContent {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Listagem de Alunos</h1>
+
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Pesquisar por ID do Aluno">
+        <button id="searchButton"><i class="search-icon">🔍</i>Pesquisar</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID da Matrícula</th>
+                <th>Nome do Aluno</th>
+                <th>CPF do Aluno</th>
+                <th>CNPJ da Escola</th>
+                <th>Nome da Escola</th>
+                <th class="checkbox-column">Selecionar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>04</td>
+                <td>Fernanda Lima</td>
+                <td>123.456.789-00</td>
+                <td>0881244-62</td>
+                <td>Escola 02</td>
+                <td class="checkbox-column"><input type="checkbox" name="selecionar1"></td>
+            </tr>
+           
+        </tbody>
+    </table>
+
+    <button id="transferirMatricula">Transferir Matrícula</button>
+    <button id="excluirMatricula">Excluir Matrícula</button>
+    <button id="backToMain">Voltar ao Menu Principal</button>
+
+    <!-- Modal de seleção de escola -->
+    <div id="schoolSelectionModal">
+        <div id="schoolSelectionModalContent">
+            <p>Para qual escola deseja fazer a transferência?</p>
+            <select id="schoolSelection">
+                <option value="escola1">Escola 1</option>
+                <option value="escola2">Escola 2</option>
+                <option value="escola3">Escola 3</option>
+            </select>
+            <button id="confirmTransfer">Confirmar</button>
+        </div>
+    </div>
+
+    <!-- Modal de sucesso -->
+    <div id="successModal">
+        <div id="successModalContent">
+            <p>Transferência concluída com sucesso!</p>
+            <button id="closeSuccessModal">Fechar</button>
+        </div>
+    </div>
+
+    <script>
+        var selectedStudentData = null;
+
+        document.getElementById("transferirMatricula").addEventListener("click", function() {
+            // Encontrar a linha selecionada
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            var selectedRow = null;
+
+            checkboxes.forEach(function(checkbox, index) {
+                if (checkbox.checked) {
+                    selectedRow = checkbox.parentNode.parentNode;
+                }
+            });
+
+            if (selectedRow) {
+                // Extrair os dados da linha selecionada
+                var cells = selectedRow.querySelectorAll('td');
+                var idMatricula = cells[0].textContent;
+                var nomeAluno = cells[1].textContent;
+                var cpfAluno = cells[2].textContent;
+                var cnpjEscola = cells[3].textContent;
+                var nomeEscola = cells[4].textContent;
+
+                selectedStudentData = {
+                    idMatricula: idMatricula,
+                    nomeAluno: nomeAluno,
+                    cpfAluno: cpfAluno,
+                    cnpjEscola: cnpjEscola,
+                    nomeEscola: nomeEscola
+                };
+
+                // Mostrar o modal de seleção de escola
+                document.getElementById("schoolSelectionModal").style.display = "block";
+            } else {
+                alert("Selecione um aluno para transferir a matrícula.");
+            }
+        });
+
+        document.getElementById("excluirMatricula").addEventListener("click", function() {
+            // Encontrar a linha selecionada
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            var selectedRow = null;
+
+            checkboxes.forEach(function(checkbox, index) {
+                if (checkbox.checked) {
+                    selectedRow = checkbox.parentNode.parentNode;
+                }
+            });
+
+            if (selectedRow) {
+                // Exibir um modelo de confirmação
+                var confirmation = confirm("Tem certeza de que deseja excluir esta matrícula?");
+                if (confirmation) {
+                    // Remover a linha selecionada
+                    selectedRow.parentNode.removeChild(selectedRow);
+                }
+            } else {
+                alert("Selecione um aluno para excluir a matrícula.");
+            }
+        });
+
+        document.getElementById("backToMain").addEventListener("click", function() {
+            // Redirecionar de volta para a página principal
+            window.location.href = "menu3.html";
+        });
+
+        document.getElementById("confirmTransfer").addEventListener("click", function() {
+            // Obter a escolha da escola do modal
+            var selectedSchool = document.getElementById("schoolSelection").value;
+            
+            // Aqui você pode adicionar a lógica de transferência real
+            // Neste exemplo, mostramos o modal de sucesso
+            document.getElementById("successModal").style.display = "block";
+        });
+
+        document.getElementById("closeSuccessModal").addEventListener("click", function() {
+            // Fechar o modal de sucesso
+            document.getElementById("successModal").style.display = "none";
+            
+            // Redirecionar após a transferência ser concluída
+            if (selectedStudentData) {
+                var queryParams = [
+                    "idMatricula=" + encodeURIComponent(selectedStudentData.idMatricula),
+                    "nomeAluno=" + encodeURIComponent(selectedStudentData.nomeAluno),
+                    "cpfAluno=" + encodeURIComponent(selectedStudentData.cpfAluno),
+                    "cnpjEscola=" + encodeURIComponent(selectedStudentData.cnpjEscola),
+                    "nomeEscola=" + encodeURIComponent(selectedStudentData.nomeEscola)
+                ];
+                window.location.href = "transferencia.html?" + queryParams.join("&");
+            }
+        });
+
+        document.getElementById("searchButton").addEventListener("click", function() {
+            // Obter o valor de pesquisa
+            var searchValue = document.getElementById("searchInput").value;
+            
+            // Realizar a pesquisa com base no valor e redirecionar para a página correspondente
+            if (searchValue === "01") {
+                window.location.href = "aluno1.html";
+            } else if (searchValue === "02") {
+                window.location.href = "aluno2.html";
+            } else if (searchValue === "03") {
+                window.location.href = "aluno3.html";
+            } else if (searchValue === "04") {
+                window.location.href = "aluno4.html";
+            } else {
+                alert("Aluno não encontrado.");
+            }
+        });
+    </script>
+</body>
+</html>

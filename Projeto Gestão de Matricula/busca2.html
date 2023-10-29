@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Localhost:8080/busca/Matricula</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            width: 50%;
+            margin: 0 auto; /* Centraliza o formulário horizontalmente */
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button {
+            background-color: #484948;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Busca de Matrícula</h1>
+        <form id="searchForm">
+            <!-- Campo de busca por ID da matrícula -->
+            <label for="matriculaId">ID da Matrícula:</label>
+            <input type="text" id="matriculaId" name="matriculaId" required>
+            
+            <label for="escola">Escola:</label>
+            <select id="escola" name="escola">
+                <option value="escola1">Escola 1</option>
+                <option value="escola2">Escola 2</option>
+                <option value="escola3">Escola 3</option>
+            </select>
+
+            <button id="buscarMatriculaPorEscola">Buscar Matrícula por Escola</button>
+            <button id="verListaGeral">Ver Lista Geral</button>
+        </form>
+    </div>
+
+    <script>
+       
+        document.getElementById("buscarMatriculaPorEscola").addEventListener("click", function() {
+            // Obtém a escola selecionada
+            var escolaSelecionada = document.getElementById("escola").value;
+            
+            // Redireciona com base na escola selecionada
+            if (escolaSelecionada === "escola1") {
+                window.location.href = "escola1.html";
+            } else if (escolaSelecionada === "escola2") {
+                window.location.href = "escola2.html";
+            } else if (escolaSelecionada === "escola3") {
+                window.location.href = "escola3.html";
+            } else {
+                alert("Escola inválida");
+            }
+        });
+
+        document.getElementById("verListaGeral").addEventListener("click", function() {
+            // Redireciona para lista geral.html
+            window.location.href = "lista geral2.html";
+        });
+
+        // Adicione o código para tratar a pesquisa de ID da matrícula e redirecionar para a página correspondente
+        document.getElementById("matriculaId").addEventListener("input", function() {
+            var matriculaId = document.getElementById("matriculaId").value;
+
+            // Lógica para redirecionar com base no ID da matrícula (exemplo)
+            if (matriculaId === "1") {
+                window.location.href = "aluno1.html";
+            } else if (matriculaId === "2") {
+                window.location.href = "aluno2.html";
+            } else if (matriculaId === "3") {
+                window.location.href = "aluno3.html";
+            } else if (matriculaId === "4") {
+                window.location.href = "aluno44.html";
+            }
+        });
+    </script>
+</body>
+</html>
